@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Commodity {
     @Id
-    @Column(name = "commodity_id")
     @GeneratedValue()
     private Long id;
 
