@@ -36,6 +36,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.postgresql:postgresql:9.4.1207')
 	compile('org.springframework.boot:spring-boot-devtools')
+	compile('com.mangofactory:swagger-springmvc:1.0.2')
+
 	//compile('org.flywaydb:flyway-core:4.0.3')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test') 

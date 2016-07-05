@@ -1,4 +1,4 @@
-package org.cats.commodity;
+package org.cats.commodity.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

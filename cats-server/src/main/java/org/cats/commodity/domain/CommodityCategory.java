@@ -1,4 +1,4 @@
-package org.cats.commodity;
+package org.cats.commodity.domain;
 
 import javax.persistence.*;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 public class CommodityCategory {
     @Id
-    @Column(name = "category_id")
     @GeneratedValue()
     private long id;
     private String name;

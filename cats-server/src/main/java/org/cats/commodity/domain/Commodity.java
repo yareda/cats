@@ -1,9 +1,7 @@
-package org.cats.commodity;
+package org.cats.commodity.domain;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Commodity {
@@ -20,15 +18,12 @@ public class Commodity {
     private Double maxTemperature;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private CommodityCategory category;
+    private CommodityCategory commodityCategory;
 
     @ManyToOne
-    @JoinColumn(name = "uom_id")
     private UnitOfMeasure unitOfMeasure;
 
     @ManyToOne
-    @JoinColumn(name = "commodity_category_id")
     private CommodityType commodityType;
 
     Commodity(){}
@@ -51,7 +46,7 @@ public class Commodity {
         this.coldStorageRequired = coldStorageRequired;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
-        this.category = category;
+        this.commodityCategory = category;
         this.unitOfMeasure = unitOfMeasure;
         this.commodityType = commodityType;
     }
@@ -117,11 +112,11 @@ public class Commodity {
     }
 
     public CommodityCategory getCategory() {
-        return category;
+        return commodityCategory;
     }
 
     public void setCategory(CommodityCategory category) {
-        this.category = category;
+        this.commodityCategory = category;
     }
 
     public UnitOfMeasure getUnitOfMeasure() {

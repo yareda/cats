@@ -1,7 +1,7 @@
 package org.cats.giftcertificate.domain;
 
-import org.cats.commodity.Commodity;
-import org.cats.commodity.UnitOfMeasure;
+import org.cats.commodity.domain.Commodity;
+import org.cats.commodity.domain.UnitOfMeasure;
 import org.cats.common.Currency;
 
 import javax.persistence.*;

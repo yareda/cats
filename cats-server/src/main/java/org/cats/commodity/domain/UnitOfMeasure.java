@@ -1,4 +1,4 @@
-package org.cats.commodity;
+package org.cats.commodity.domain;
 
 import javax.persistence.*;
 
@@ -6,25 +6,22 @@ import javax.persistence.*;
 public class UnitOfMeasure {
 
     @Id
-    @Column(name = "uom_id")
     @GeneratedValue
     private Long id;
 
     private String type;
-
+    private String name;
     private double ratio;
 
-
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private UnitOfMeasureCategory category;
+    private UomCategory uomCategory;
 
     UnitOfMeasure(){}
 
-
-    public UnitOfMeasure(String type, double ratio, UnitOfMeasureCategory category){
+    public UnitOfMeasure(String name, String type, double ratio, UomCategory category){
+        this.name = name;
         this.type = type;
-        this.category = category;
+        this.uomCategory = category;
         this.ratio = ratio;
     }
 
@@ -44,15 +41,23 @@ public class UnitOfMeasure {
         this.type = type;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public double getRatio() { return ratio;}
 
     public void setRatio(double ratio) { this.ratio = ratio;}
 
-    public UnitOfMeasureCategory getCategory() {
-        return category;
+    public UomCategory getUomCategory() {
+        return uomCategory;
     }
 
-    public void setCategory(UnitOfMeasureCategory category) {
-        this.category = category;
+    public void setUomCategory(UomCategory uomCategory) {
+        this.uomCategory = uomCategory;
     }
 }
