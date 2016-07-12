@@ -8,13 +8,18 @@ import org.cats.giftcertificate.repository.BudgetTypeRepository;
 import org.cats.giftcertificate.repository.DonorRepository;
 import org.cats.giftcertificate.repository.FundSourceRepository;
 import org.cats.giftcertificate.repository.GiftCertificateRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 @Service
 public class GiftCertificateService {
+
+    private final static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     private GiftCertificateRepository giftCertificateRepository;
@@ -30,6 +35,18 @@ public class GiftCertificateService {
 
     public List<GiftCertificate> getGiftCertificatesByStatus(String status){
         return giftCertificateRepository.findByStatus(status);
+    }
+
+    public GiftCertificate getGiftCertificate(Long id){
+        return giftCertificateRepository.findOne(id);
+    }
+
+    public List<GiftCertificate> getGiftCertificates(){
+        return giftCertificateRepository.findAll();
+    }
+
+    public GiftCertificate save(GiftCertificate giftCertificate){
+        return giftCertificateRepository.save(giftCertificate);
     }
 
     public List<Donor> getDonors(){

@@ -1,13 +1,12 @@
 package org.cats.commodity.domain;
 
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.*;
 
 @Entity
-public class Commodity {
-    @Id
-    @GeneratedValue()
-    private Long id;
+public class Commodity extends BaseModel {
 
     private String name;
     private String longName;
@@ -49,10 +48,6 @@ public class Commodity {
         this.commodityCategory = category;
         this.unitOfMeasure = unitOfMeasure;
         this.commodityType = commodityType;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {

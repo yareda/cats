@@ -1,13 +1,11 @@
 package org.cats.commodity.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.*;
 
 @Entity
-public class UnitOfMeasure {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class UnitOfMeasure extends BaseModel {
 
     private String type;
     private String name;
@@ -23,14 +21,6 @@ public class UnitOfMeasure {
         this.type = type;
         this.uomCategory = category;
         this.ratio = ratio;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getType() {

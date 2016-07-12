@@ -1,15 +1,14 @@
 package org.cats.giftcertificate.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
-public class GiftCertificate {
-    @Id
-    @Column(name = "gift_certificate_id")
-    private Long id;
+public class GiftCertificate extends BaseModel {
     private Date giftDate;
     private String referenceNo;
     private String vessel;
@@ -21,34 +20,26 @@ public class GiftCertificate {
     private BigDecimal amount;
     private BigDecimal estimatedPrice;
     private BigDecimal estimatedTax;
-    private String purchasedYear;
+    private String purchaseYear;
     private Date expiryDate;
     private String accountNo;
 
     @ManyToOne
-    @JoinColumn(name = "donor_id")
     private Donor donor;
 
     @ManyToOne
-    @JoinColumn(name = "program_id")
     private Program program;
 
     @ManyToOne
-    @JoinColumn(name = "mode_of_transport")
     private ModeOfTransport modeOfTransport;
 
     @ManyToOne
-    @JoinColumn(name = "budget_type")
     private BudgetType budgetType;
 
     @OneToMany(mappedBy = "giftCertificate")
     private Set<GiftCertificateItem> giftCertificateItems;
 
     GiftCertificate(){};
-
-    public Long getId() {
-        return id;
-    }
 
     public Date getGiftDate() {
         return giftDate;
@@ -139,11 +130,11 @@ public class GiftCertificate {
     }
 
     public String getPurchasedYear() {
-        return purchasedYear;
+        return purchaseYear;
     }
 
     public void setPurchasedYear(String purchasedYear) {
-        this.purchasedYear = purchasedYear;
+        this.purchaseYear = purchasedYear;
     }
 
     public Date getExpiryDate() {
@@ -196,10 +187,6 @@ public class GiftCertificate {
 
     public Set<GiftCertificateItem> getGiftCertificateItems() {
         return giftCertificateItems;
-    }
-
-    public void setGiftCertificateItems(Set<GiftCertificateItem> giftCertificateItems) {
-        this.giftCertificateItems = giftCertificateItems;
     }
 
 }

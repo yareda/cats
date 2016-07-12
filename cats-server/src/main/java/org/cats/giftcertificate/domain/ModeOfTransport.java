@@ -1,20 +1,16 @@
 package org.cats.giftcertificate.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class ModeOfTransport {
-    @Id
-    @Column(name = "mode_of_transport_id")
-    private Long id;
+public class ModeOfTransport extends BaseModel {
+
     private String name;
     private String description;
-
-    public Long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

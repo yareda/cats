@@ -37,3 +37,12 @@ INSERT INTO mode_of_transport (name) VALUES ('Ship');
 INSERT INTO mode_of_transport (name) VALUES ('Air');
 INSERT INTO mode_of_transport (name) VALUES ('Land(Truck)');
 INSERT INTO mode_of_transport (name) VALUES ('Land(Train)');
+
+/*
+  Donor
+ */
+INSERT INTO donor(name,short_name,code) VALUES ('United Nations World Food Program','UNWFP','WFP');
+INSERT INTO donor(name,short_name,code) VALUES ('USAID','USAID','USAID');
+INSERT INTO donor(name,short_name,code) VALUES ('Catholic Relief Service','CRS','CRS');
+INSERT INTO donor(name,short_name,code) VALUES ('Government of Ethiopia','FDRE','FDRE');
+

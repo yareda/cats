@@ -358,8 +358,8 @@ create table gift_certificate (
    estimated_price      decimal              null,
    estimated_tax        decimal              null,
    purchase_year        varchar(4)           null,
-   expiray_date         date                 null,
-   budget_type          int4                 null,
+   expiry_date         date                 null,
+   budget_type_id      int4                 null,
    account_no           varchar(50)          null,
    constraint pk_gift_certificate primary key (id)
 );
@@ -1188,7 +1188,7 @@ alter table gift_certificate
       references mode_of_transport (id);
 
 alter table gift_certificate
-   add constraint fk_gift_cer_reference_budget_t foreign key (budget_type)
+   add constraint fk_gift_cer_reference_budget_t foreign key (budget_type_id)
       references budget_type (id);
 
 alter table gift_certificate_items

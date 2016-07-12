@@ -1,14 +1,13 @@
 package org.cats.giftcertificate.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
-public class FundSource {
-    @Id
-    @Column(name = "fund_source_id")
-    private Long id;
+public class FundSource extends BaseModel {
+    @Column(unique = true)
     private String name;
     private String description;
 
@@ -17,10 +16,6 @@ public class FundSource {
     public FundSource(String name, String description){
         this.name = name;
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {

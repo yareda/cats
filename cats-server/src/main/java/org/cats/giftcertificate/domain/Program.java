@@ -1,21 +1,17 @@
 package org.cats.giftcertificate.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+
 
 @Entity
-public class Program {
-    @Id
-    @Column(name = "program_id")
-    private Long id;
+public class Program extends BaseModel {
+    @Column(unique = true)
     private String name;
     private String shortName;
     private String description;
-
-    public Long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

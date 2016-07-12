@@ -10,23 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="commodity")
+@RequestMapping(value="api/commodity")
 public class CommodityController {
 
     @Autowired
     CommodityService commodityService;
 
-    @RequestMapping("**/uom")
-    public List<UnitOfMeasure> uom(){
-        return commodityService.getUnitOfMeasures();
-    }
 
-    @RequestMapping("**/commoditycategory")
+    @RequestMapping("**/categories")
     public List<CommodityCategory> commodityCategories(){
         return commodityService.getCommodityCategories();
     }
 
-    @RequestMapping("**/commoditytype")
+    @RequestMapping("**/types")
     public List<CommodityType> commodityTypes(){return commodityService.getCommodityTypes();}
 
 }

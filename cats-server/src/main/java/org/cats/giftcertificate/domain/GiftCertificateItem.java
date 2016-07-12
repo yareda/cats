@@ -1,19 +1,17 @@
 package org.cats.giftcertificate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.cats.commodity.domain.Commodity;
 import org.cats.commodity.domain.UnitOfMeasure;
 import org.cats.common.Currency;
+import org.cats.core.BaseModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-public class GiftCertificateItem {
-    @Id
-    @Column(name = "line_item_id")
-    private Long id;
-
+public class GiftCertificateItem extends BaseModel {
     private BigDecimal amount;
     private BigDecimal estimatedValue;
     private BigDecimal estimatedTax;
@@ -21,6 +19,7 @@ public class GiftCertificateItem {
 
     @ManyToOne
     @JoinColumn(name = "gift_certificate_id")
+    @JsonIgnore
     private GiftCertificate giftCertificate;
 
     @ManyToOne
@@ -38,10 +37,6 @@ public class GiftCertificateItem {
     @ManyToOne
     @JoinColumn(name = "currency_id")
     private Currency currency;
-
-    public Long getId() {
-        return id;
-    }
 
 
     public BigDecimal getAmount() {
@@ -74,14 +69,6 @@ public class GiftCertificateItem {
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
-    }
-
-    public GiftCertificate getGiftCertificate() {
-        return giftCertificate;
-    }
-
-    public void setGiftCertificate(GiftCertificate giftCertificate) {
-        this.giftCertificate = giftCertificate;
     }
 
     public Commodity getCommodity() {

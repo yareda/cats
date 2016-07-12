@@ -1,19 +1,14 @@
 package org.cats.commodity.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class UomCategory {
-    @Id
-    @GeneratedValue
-    private Long id;
+public class UomCategory extends BaseModel {
     private String name;
-
-    public Long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
@@ -22,4 +17,5 @@ public class UomCategory {
     public void setName(String name) {
         this.name = name;
     }
+
 }

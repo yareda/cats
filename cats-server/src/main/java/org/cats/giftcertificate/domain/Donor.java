@@ -1,19 +1,19 @@
 package org.cats.giftcertificate.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Donor {
-    @Id
-    @Column(name = "donor_id")
-    private Long id;
+public class Donor extends BaseModel {
+    @Column(unique = true)
     private String name;
     private String shortName;
     private String code;
-    private boolean sourceDonor;
-    private boolean responsibleDonor;
+    private Boolean sourceDonor;
+    private Boolean responsibleDonor;
 
     Donor(){}
 
@@ -23,10 +23,6 @@ public class Donor {
         this.code = code;
         this.sourceDonor = sourceDonor;
         this.responsibleDonor = responsibleDonor;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
@@ -53,19 +49,19 @@ public class Donor {
         this.code = code;
     }
 
-    public boolean isSourceDonor() {
+    public Boolean isSourceDonor() {
         return sourceDonor;
     }
 
-    public void setSourceDonor(boolean sourceDonor) {
+    public void setSourceDonor(Boolean sourceDonor) {
         this.sourceDonor = sourceDonor;
     }
 
-    public boolean isResponsibleDonor() {
+    public Boolean isResponsibleDonor() {
         return responsibleDonor;
     }
 
-    public void setResponsibleDonor(boolean responsibleDonor) {
+    public void setResponsibleDonor(Boolean responsibleDonor) {
         this.responsibleDonor = responsibleDonor;
     }
 }

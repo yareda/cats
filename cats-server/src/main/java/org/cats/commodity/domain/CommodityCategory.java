@@ -1,13 +1,12 @@
 package org.cats.commodity.domain;
 
+import org.cats.core.BaseModel;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class CommodityCategory {
-    @Id
-    @GeneratedValue()
-    private long id;
+public class CommodityCategory extends BaseModel {
     private String name;
     private String code;
     private String description;
@@ -17,10 +16,6 @@ public class CommodityCategory {
 
     @OneToMany(mappedBy = "parent")
     private List<CommodityCategory> children;
-
-    public long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
