@@ -2,6 +2,7 @@ package org.cats.core;
 
 import javax.annotation.Generated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Objects;
 @MappedSuperclass
 public class BaseModel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
 

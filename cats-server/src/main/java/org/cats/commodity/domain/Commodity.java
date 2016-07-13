@@ -1,9 +1,11 @@
 package org.cats.commodity.domain;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.cats.core.BaseModel;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Commodity extends BaseModel {
@@ -11,13 +13,20 @@ public class Commodity extends BaseModel {
     private String name;
     private String longName;
     private String description;
-    private boolean hazardous;
-    private boolean coldStorageRequired;
-    private double minTemperature;
+    private Boolean hazardous;
+    private Boolean coldStorage;
+    private Double minTemperature;
     private Double maxTemperature;
 
     @ManyToOne
-    private CommodityCategory commodityCategory;
+    @JsonBackReference
+    @JoinColumn(name = "parent_commodity_id")
+    private Commodity parent;
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "parent_commodity_id")
+    private List<Commodity> children;
 
     @ManyToOne
     private UnitOfMeasure unitOfMeasure;
@@ -30,24 +39,24 @@ public class Commodity extends BaseModel {
     public Commodity(String name,
                      String longName,
                      String description,
-                     boolean hazardous,
-                     boolean coldStorageRequired,
+                     Boolean hazardous,
+                     Boolean coldStorageRequired,
                      Double minTemperature,
                      Double maxTemperature,
-                     CommodityCategory category,
                      UnitOfMeasure unitOfMeasure,
-                     CommodityType commodityType){
+                     CommodityType commodityType,
+                     Commodity parent){
 
         this.name = name;
         this.longName = longName;
         this.description = description;
         this.hazardous = hazardous;
-        this.coldStorageRequired = coldStorageRequired;
+        this.coldStorage = coldStorageRequired;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
-        this.commodityCategory = category;
         this.unitOfMeasure = unitOfMeasure;
         this.commodityType = commodityType;
+        this.parent = parent;
     }
 
     public String getName() {
@@ -74,20 +83,20 @@ public class Commodity extends BaseModel {
         this.description = description;
     }
 
-    public boolean isHazardous() {
+    public Boolean isHazardous() {
         return hazardous;
     }
 
-    public void setHazardous(boolean hazardous) {
+    public void setHazardous(Boolean hazardous) {
         this.hazardous = hazardous;
     }
 
-    public boolean isColdStorageRequired() {
-        return coldStorageRequired;
+    public Boolean isColdStorage() {
+        return coldStorage;
     }
 
-    public void setColdStorageRequired(boolean coldStorageRequired) {
-        this.coldStorageRequired = coldStorageRequired;
+    public void setColdStorage(Boolean coldStorage) {
+        this.coldStorage = coldStorage;
     }
 
     public Double getMinTemperature() {
@@ -106,12 +115,20 @@ public class Commodity extends BaseModel {
         this.maxTemperature = maxTemperature;
     }
 
-    public CommodityCategory getCategory() {
-        return commodityCategory;
+    public Commodity getParent() {
+        return parent;
     }
 
-    public void setCategory(CommodityCategory category) {
-        this.commodityCategory = category;
+    public void setParent(Commodity parent) {
+        this.parent = parent;
+    }
+
+    public List<Commodity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Commodity> children) {
+        this.children = children;
     }
 
     public UnitOfMeasure getUnitOfMeasure() {
@@ -129,5 +146,4 @@ public class Commodity extends BaseModel {
     public void setCommodityType(CommodityType commodityType) {
         this.commodityType = commodityType;
     }
-
 }

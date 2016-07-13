@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 9.x                               */
-/* Created on:     7/5/2016 9:30:04 AM                          */
+/* Created on:     7/13/2016 11:32:04 AM                        */
 /*==============================================================*/
 
 
@@ -64,8 +64,8 @@ create table budget_type (
 create table commodity (
    id                   serial not null,
    commodity_type_id    int4                 null,
-   category_id          int4                 null,
    unit_of_measure_id   int4                 null,
+   parent_commodity_id  int4                 null,
    name                 varchar(100)         null,
    long_name            varchar(200)         null,
    code                 varchar(10)          null,
@@ -74,19 +74,8 @@ create table commodity (
    cold_storage         int4                 null,
    min_temperature      float8               null,
    max_temperature      float8               null,
+   parent_only          bool                 null,
    constraint pk_commodity primary key (id)
-);
-
-/*==============================================================*/
-/* Table: commodity_category                                    */
-/*==============================================================*/
-create table commodity_category (
-   id                   serial not null,
-   name                 varchar(100)         null,
-   code                 varchar(5)           null,
-   parent_id            int4                 null,
-   description          text                 null,
-   constraint pk_commodity_category primary key (id)
 );
 
 /*==============================================================*/
@@ -107,7 +96,7 @@ comment on table commodity_source is
 /* Table: commodity_type                                        */
 /*==============================================================*/
 create table commodity_type (
-   id    serial not null,
+   id                   serial not null,
    name                 varchar(200)         null,
    description          char(200)            null,
    constraint pk_commodity_type primary key (id)
@@ -358,16 +347,16 @@ create table gift_certificate (
    estimated_price      decimal              null,
    estimated_tax        decimal              null,
    purchase_year        varchar(4)           null,
-   expiry_date         date                 null,
-   budget_type_id      int4                 null,
+   expiry_date          date                 null,
+   budget_type_id       int4                 null,
    account_no           varchar(50)          null,
    constraint pk_gift_certificate primary key (id)
 );
 
 /*==============================================================*/
-/* Table: gift_certificate_items                                */
+/* Table: gift_certificate_item                                 */
 /*==============================================================*/
-create table gift_certificate_items (
+create table gift_certificate_item (
    id                   serial not null,
    gift_certificate_id  int4                 not null,
    commodity_id         int4                 not null,
@@ -377,9 +366,8 @@ create table gift_certificate_items (
    amount               decimal              not null,
    estimated_value      decimal              null,
    estimated_tax        decimal              null,
-   fund_source          int4                 null,
    expiration_date      date                 null,
-   constraint pk_gift_certificate_items primary key (id)
+   constraint pk_gift_certificate_item primary key (id)
 );
 
 /*==============================================================*/
@@ -552,7 +540,6 @@ create table ration_detail (
    id                   serial not null,
    ration_id            int4                 null,
    unit_of_measure      int4                 null,
-   category_id          int4                 null,
    amount               decimal              null,
    constraint pk_ration_detail primary key (id)
 );
@@ -815,7 +802,7 @@ create table unit_of_measure (
 /* Table: uom_category                                          */
 /*==============================================================*/
 create table uom_category (
-   id      serial not null,
+   id                   serial not null,
    name                 varchar(200)         null,
    constraint pk_uom_category primary key (id)
 );
@@ -1058,468 +1045,461 @@ create table woreda_stock_distribution_line (
 
 alter table bid
    add constraint fk_bid_reference_bid_plan foreign key (plan_id)
-      references bid_plan (id);
+references bid_plan (id);
 
 alter table bid
    add constraint fk_bid_reference_location foreign key (region_id)
-      references location (id);
+references location (id);
 
 alter table bid_plan_line_item
    add constraint fk_bid_plan_reference_bid_plan foreign key (plan_id)
-      references bid_plan (id);
+references bid_plan (id);
 
 alter table bid_plan_line_item
    add constraint fk_bid_plan_reference_location foreign key (destination_)
-      references location (id);
+references location (id);
 
 alter table commodity
    add constraint fk_commodit_reference_unit_of_ foreign key (unit_of_measure_id)
-      references unit_of_measure (id);
+references unit_of_measure (id);
 
 alter table commodity
-   add constraint fk_commodit_ref_comca_commodit foreign key (category_id)
-      references commodity_category (id);
+   add constraint fk_commodit_reference_commodit foreign key (parent_commodity_id)
+references commodity (id)
+on delete restrict on update restrict;
 
 alter table commodity
    add constraint fk_commodit_ref_commo_commodit foreign key (commodity_type_id)
-      references commodity_type (id);
-
-alter table commodity_category
-   add constraint fk_commodit_ref_self__commodit foreign key (parent_id)
-      references commodity_category (id);
+references commodity_type (id);
 
 alter table dispatch
    add constraint fk_dispatch_reference_fdp foreign key (fdp_id)
-      references fdp (id);
+references fdp (id);
 
 alter table dispatch_allocation
    add constraint fk_dispatch_reference_program foreign key (program_id)
-      references program (id)
-      on delete restrict on update restrict;
+references program (id)
+on delete restrict on update restrict;
 
 alter table dispatch_allocation
    add constraint fk_dispatch_reference_commodit foreign key (commodity_id)
-      references commodity (id)
-      on delete restrict on update restrict;
+references commodity (id)
+on delete restrict on update restrict;
 
 alter table dispatch_allocation
    add constraint fk_dispatch_reference_unit_of_ foreign key (unit_of_measure_id)
-      references unit_of_measure (id)
-      on delete restrict on update restrict;
+references unit_of_measure (id)
+on delete restrict on update restrict;
 
 alter table dispatch_allocation
    add constraint fk_dispatch_reference_operatio foreign key (ope_id)
-      references operation (id)
-      on delete restrict on update restrict;
+references operation (id)
+on delete restrict on update restrict;
 
 alter table dispatch_allocation
    add constraint fk_dispatch_reference_project foreign key (project_id)
-      references project (id)
-      on delete restrict on update restrict;
+references project (id)
+on delete restrict on update restrict;
 
 alter table dispatch_allocation
    add constraint fk_dispatch_reference_project_ foreign key (project_batch_id)
-      references project_batch (id)
-      on delete restrict on update restrict;
+references project_batch (id)
+on delete restrict on update restrict;
 
 alter table dispatch_item
    add constraint fk_dispatch_reference_dispatch foreign key (dispatch_id)
-      references dispatch (id);
+references dispatch (id);
 
 alter table dispatch_item
    add constraint fk_dispatch_reference_unit_of_ foreign key (uom_id)
-      references unit_of_measure (id);
+references unit_of_measure (id);
 
 alter table dispatch_item
    add constraint fk_dispatch_reference_project_ foreign key (batch_id)
-      references project_batch (id);
+references project_batch (id);
 
 alter table dispatch_item
    add constraint fk_dispatch_reference_stock_mo foreign key (stock_move_id)
-      references stock_move (id);
+references stock_move (id);
 
 alter table dispatch_item
    add constraint fk_dispatch_reference_project foreign key (project_id)
-      references project (id)
-      on delete restrict on update restrict;
+references project (id)
+on delete restrict on update restrict;
 
 alter table fdp
    add constraint fk_fdp_reference_location foreign key (location_id)
-      references location (id);
+references location (id);
 
 alter table fdp_cmpm_receipt
    add constraint fk_fdp_cmpm_reference_operatio foreign key (operation_id)
-      references operation (id);
+references operation (id);
 
 alter table fdp_cmpm_receipt_line
    add constraint fk_fdp_cmpm_reference_fdp_cmpm foreign key (fdp_cmpm_receipt_id)
-      references fdp_cmpm_receipt (id);
+references fdp_cmpm_receipt (id);
 
 alter table fdp_contact
    add constraint fk_fdp_cont_reference_fdp foreign key (fdp_id)
-      references fdp (id);
+references fdp (id);
 
 alter table fdp_receipt
    add constraint fk_fdp_rece_reference_fdp foreign key (fdp_id)
-      references fdp (id);
+references fdp (id);
 
 alter table fdp_receipt_item
    add constraint fk_fdp_rece_reference_fdp_rece foreign key (fdp_receipt_id)
-      references fdp_receipt (id);
+references fdp_receipt (id);
 
 alter table fscd_plan_line
    add constraint fk_fscd_pla_reference_fscd_ann foreign key (fscd_plan_id)
-      references fscd_annual_plan (id);
+references fscd_annual_plan (id);
 
 alter table fscd_plan_line
    add constraint fk_fscd_pla_reference_location foreign key (woreda_id)
-      references location (id);
+references location (id);
 
 alter table gift_certificate
    add constraint fk_gift_cer_reference_donor foreign key (donor_id)
-      references donor (id);
+references donor (id);
 
 alter table gift_certificate
    add constraint fk_gift_cer_reference_program foreign key (program_id)
-      references program (id);
+references program (id);
 
 alter table gift_certificate
    add constraint fk_gift_cer_reference_mode_of_ foreign key (mode_of_transport_id)
-      references mode_of_transport (id);
+references mode_of_transport (id);
 
 alter table gift_certificate
    add constraint fk_gift_cer_reference_budget_t foreign key (budget_type_id)
-      references budget_type (id);
+references budget_type (id);
 
-alter table gift_certificate_items
+alter table gift_certificate_item
    add constraint fk_gift_cer_reference_gift_cer foreign key (gift_certificate_id)
-      references gift_certificate (id);
+references gift_certificate (id);
 
-alter table gift_certificate_items
+alter table gift_certificate_item
    add constraint fk_gift_cer_reference_commodit foreign key (commodity_id)
-      references commodity (id);
+references commodity (id);
 
-alter table gift_certificate_items
+alter table gift_certificate_item
    add constraint fk_gift_cer_reference_fund_sou foreign key (fund_source_id)
-      references fund_source (id);
+references fund_source (id);
 
-alter table gift_certificate_items
+alter table gift_certificate_item
    add constraint fk_gift_cer_reference_unit_of_ foreign key (unit_of_measure_id)
-      references unit_of_measure (id);
+references unit_of_measure (id);
 
-alter table gift_certificate_items
+alter table gift_certificate_item
    add constraint fk_gift_cer_reference_currency foreign key (currency_id)
-      references currency (id);
+references currency (id);
 
 alter table hrd
    add constraint fk_hrd_reference_season foreign key (season_id)
-      references season (id);
+references season (id);
 
 alter table hrd
    add constraint fk_hrd_reference_ration foreign key (ration_id)
-      references ration (id);
+references ration (id);
 
 alter table hrd_plan_line
    add constraint fk_hrd_plan_reference_hrd foreign key (hrd_id)
-      references hrd (id);
+references hrd (id);
 
 alter table hrd_plan_line
    add constraint fk_hrd_plan_reference_location foreign key (location_id)
-      references location (id);
+references location (id);
 
 alter table hub
    add constraint fk_hub_reference_location foreign key (location_id)
-      references location (id);
+references location (id);
 
 alter table location
    add constraint fk_location_reference_location foreign key (location_type_id)
-      references location_type (id);
+references location_type (id);
 
 alter table operation
    add constraint fk_operatio_reference_hrd foreign key (hrd_id)
-      references hrd (id);
+references hrd (id);
 
 alter table operation
    add constraint fk_operatio_reference_program foreign key (program_id)
-      references program (id);
+references program (id);
 
 alter table operation
    add constraint fk_operatio_reference_fscd_ann foreign key (fscd_plan_id)
-      references fscd_annual_plan (id);
+references fscd_annual_plan (id);
 
 alter table project_batch
    add constraint fk_project__reference_commodit foreign key (commodity_id)
-      references commodity (id);
+references commodity (id);
 
 alter table project_batch
    add constraint fk_project__reference_project foreign key (project_id)
-      references project (id)
-      on delete restrict on update restrict;
+references project (id)
+on delete restrict on update restrict;
 
 alter table quotation
    add constraint fk_quotatio_reference_submissi foreign key (submission_id)
-      references submission (id);
+references submission (id);
 
 alter table ration_detail
    add constraint fk_ration_d_reference_ration foreign key (ration_id)
-      references ration (id);
+references ration (id);
 
 alter table ration_detail
    add constraint fk_ration_d_reference_unit_of_ foreign key (unit_of_measure)
-      references unit_of_measure (id);
-
-alter table ration_detail
-   add constraint fk_ration_d_reference_commodit foreign key (category_id)
-      references commodity_category (id);
+references unit_of_measure (id);
 
 alter table receipt
    add constraint fk_receipt_reference_stock_op foreign key (stock_operation_id)
-      references stock_operation (stock_operation_id);
+references stock_operation (stock_operation_id);
 
 alter table receipt_line
    add constraint fk_receipt__reference_project_ foreign key (batch_id)
-      references project_batch (id);
+references project_batch (id);
 
 alter table receipt_line
    add constraint fk_receipt__reference_stock_mo foreign key (stock_move_id)
-      references stock_move (id);
+references stock_move (id);
 
 alter table receipt_line
    add constraint fk_receipt__reference_project foreign key (project_id)
-      references project (id)
-      on delete restrict on update restrict;
+references project (id)
+on delete restrict on update restrict;
 
 alter table receipt_line
    add constraint fk_receipt__ref_recip_receipt foreign key (receipt_id)
-      references receipt (id);
+references receipt (id);
 
 alter table region_request
    add constraint fk_region_r_reference_program foreign key (program_id)
-      references program (id);
+references program (id);
 
 alter table region_request_item
    add constraint fk_region_r_reference_fdp foreign key (fdp_id)
-      references fdp (id);
+references fdp (id);
 
 alter table region_request_item
    add constraint fk_region_r_reference_region_r foreign key (request_id)
-      references region_request (id);
+references region_request (id);
 
 alter table requisition
    add constraint fk_requisit_reference_commodit foreign key (commodity_id)
-      references commodity (id);
+references commodity (id);
 
 alter table requisition
    add constraint fk_requisit_reference_operatio foreign key (operation_id)
-      references operation (id);
+references operation (id);
 
 alter table requisition
    add constraint fk_requisit_reference_ration foreign key (ration)
-      references ration (id);
+references ration (id);
 
 alter table requisition
    add constraint fk_requisit_ref_req_l_location foreign key (region)
-      references location (id);
+references location (id);
 
 alter table requisition
    add constraint fk_requisit_ref_requi_location foreign key (zone)
-      references location (id);
+references location (id);
 
 alter table requisition_detail
    add constraint fk_requisit_reference_fdp foreign key (fdp_id)
-      references fdp (id);
+references fdp (id);
 
 alter table requisition_detail
    add constraint fk_requisit_reference_requisit foreign key (requisition_id)
-      references requisition (id);
+references requisition (id);
 
 alter table stock_location
    add constraint fk_stock_lo_reference_stock_lo foreign key (stock_location_type_id)
-      references stock_location_type (id);
+references stock_location_type (id);
 
 alter table stock_move
    add constraint fk_stock_mo_reference_commodit foreign key (commodity_id)
-      references commodity (id);
+references commodity (id);
 
 alter table stock_move
    add constraint fk_stock_mo_reference_stock_op foreign key (stock_operation_id)
-      references stock_operation (stock_operation_id);
+references stock_operation (stock_operation_id);
 
 alter table stock_move
    add constraint fk_stock_mo_ref_stkmv_project_ foreign key (batch_id)
-      references project_batch (id);
+references project_batch (id);
 
 alter table stock_operation
    add constraint fk_stock_op_ref_stk_o_stock_lo foreign key (source_location_id)
-      references stock_location (stock_location_id);
+references stock_location (stock_location_id);
 
 alter table stock_operation
    add constraint fk_stock_op_ref_stkop_stock_lo foreign key (destination_location_id)
-      references stock_location (stock_location_id);
+references stock_location (stock_location_id);
 
 alter table store
    add constraint fk_store_reference_hub foreign key (hub_id)
-      references hub (id);
+references hub (id);
 
 alter table store
    add constraint fk_store_reference_store_ow foreign key (store_owner_id)
-      references store_owner (id);
+references store_owner (id);
 
 alter table store
    add constraint fk_store_reference_store_lo foreign key (store_location_id)
-      references store_location (id);
+references store_location (id);
 
 alter table store_location
    add constraint fk_store_lo_reference_hub foreign key (hub_id)
-      references hub (id);
+references hub (id);
 
 alter table store_location
    add constraint fk_store_lo_reference_location foreign key (location_id)
-      references location (id);
+references location (id);
 
 alter table submission
    add constraint fk_submissi_reference_bid foreign key (bid_id)
-      references bid (id);
+references bid (id);
 
 alter table submission
    add constraint fk_submissi_reference_transpor foreign key (transporter_id)
-      references transporter (id);
+references transporter (id);
 
 alter table transporter_address
    add constraint fk_transpor_reference_transpor foreign key (transporter_id)
-      references transporter (id);
+references transporter (id);
 
 alter table unit_of_measure
    add constraint fk_unit_of__reference_uom_cate foreign key (uom_category_id)
-      references uom_category (id);
+references uom_category (id);
 
 alter table bid_winner
    add constraint fk_bid_winn_reference_bid foreign key (bid_id)
-      references bid (id)
-      on delete restrict on update restrict;
+references bid (id)
+on delete restrict on update restrict;
 
 alter table bid_winner
    add constraint fk_bid_winn_reference_transpor foreign key (transporter_id)
-      references transporter (id)
-      on delete restrict on update restrict;
+references transporter (id)
+on delete restrict on update restrict;
 
 alter table project
    add constraint fk_project_reference_commodit foreign key (commodity_source_id)
-      references commodity_source (id)
-      on delete restrict on update restrict;
+references commodity_source (id)
+on delete restrict on update restrict;
 
 alter table project_allocation
    add constraint fk_project__reference_project foreign key (project_id)
-      references project (id)
-      on delete restrict on update restrict;
+references project (id)
+on delete restrict on update restrict;
 
 alter table stock_transaction
    add constraint fk_stock_tr_reference_stock_mo foreign key (stock_move_id)
-      references stock_move (id);
+references stock_move (id);
 
 alter table stock_transaction
    add constraint fk_stock_tr_reference_stock_lo foreign key (stock_location_id)
-      references stock_location (stock_location_id);
+references stock_location (stock_location_id);
 
 alter table stock_transaction
    add constraint fk_stock_tr_reference_commodit foreign key (commodity_id)
-      references commodity (id);
+references commodity (id);
 
 alter table stock_transaction
    add constraint fk_stock_tr_ref_batch_project_ foreign key (batch_id)
-      references project_batch (id);
+references project_batch (id);
 
 alter table store_ledger
    add constraint fk_store_le_reference_donor foreign key (donor_id)
-      references donor (id)
-      on delete restrict on update restrict;
+references donor (id)
+on delete restrict on update restrict;
 
 alter table store_ledger
    add constraint fk_store_le_reference_commodit foreign key (commodity_id)
-      references commodity (id)
-      on delete restrict on update restrict;
+references commodity (id)
+on delete restrict on update restrict;
 
 alter table store_ledger
    add constraint fk_store_le_reference_hub foreign key (hub_id)
-      references hub (id)
-      on delete restrict on update restrict;
+references hub (id)
+on delete restrict on update restrict;
 
 alter table store_ledger
    add constraint fk_store_le_reference_store foreign key (store_id)
-      references store (id)
-      on delete restrict on update restrict;
+references store (id)
+on delete restrict on update restrict;
 
 alter table store_ledger_entry
    add constraint fk_store_le_reference_fdp foreign key (fdp_id)
-      references fdp (id)
-      on delete restrict on update restrict;
+references fdp (id)
+on delete restrict on update restrict;
 
 alter table store_ledger_entry
    add constraint fk_store_le_reference_unit_of_ foreign key (unit_of_measure_id)
-      references unit_of_measure (id)
-      on delete restrict on update restrict;
+references unit_of_measure (id)
+on delete restrict on update restrict;
 
 alter table store_ledger_entry
    add constraint fk_store_le_reference_store_le foreign key (store_ledger_id)
-      references store_ledger (id)
-      on delete restrict on update restrict;
+references store_ledger (id)
+on delete restrict on update restrict;
 
 alter table store_ledger_entry
    add constraint fk_store_le_ref_ledge_location foreign key (zone_id)
-      references location (id)
-      on delete restrict on update restrict;
+references location (id)
+on delete restrict on update restrict;
 
 alter table store_ledger_entry
    add constraint fk_store_le_ref_loc_s_location foreign key (woreda_id)
-      references location (id)
-      on delete restrict on update restrict;
+references location (id)
+on delete restrict on update restrict;
 
 alter table store_ledger_entry
    add constraint fk_store_le_ref_store_location foreign key (region_id)
-      references location (id)
-      on delete restrict on update restrict;
+references location (id)
+on delete restrict on update restrict;
 
 alter table transport_contract
    add constraint fk_transpor_reference_transpor foreign key (transporter_id)
-      references transporter (id)
-      on delete restrict on update restrict;
+references transporter (id)
+on delete restrict on update restrict;
 
 alter table transport_order
    add constraint fk_transpor_reference_operatio foreign key (operation_id)
-      references operation (id)
-      on delete restrict on update restrict;
+references operation (id)
+on delete restrict on update restrict;
 
 alter table transport_order
    add constraint fk_transpor_reference_transpor foreign key (transporter_id)
-      references transporter (id)
-      on delete restrict on update restrict;
+references transporter (id)
+on delete restrict on update restrict;
 
 alter table transport_requisition
    add constraint fk_transpor_reference_location foreign key (region_id)
-      references location (id)
-      on delete restrict on update restrict;
+references location (id)
+on delete restrict on update restrict;
 
 alter table transport_requisition
    add constraint fk_transpor_reference_operatio foreign key (operation_id)
-      references operation (id)
-      on delete restrict on update restrict;
+references operation (id)
+on delete restrict on update restrict;
 
 alter table transport_requisition_item
    add constraint fk_transpor_reference_transpor foreign key (transport_requisition_id)
-      references transport_requisition (id)
-      on delete restrict on update restrict;
+references transport_requisition (id)
+on delete restrict on update restrict;
 
 alter table transport_requisition_item
    add constraint fk_transpor_reference_fdp foreign key (fdp_id)
-      references fdp (id)
-      on delete restrict on update restrict;
+references fdp (id)
+on delete restrict on update restrict;
 
 alter table transport_requisition_item
    add constraint fk_transpor_reference_commodit foreign key (commodity_id)
-      references commodity (id)
-      on delete restrict on update restrict;
+references commodity (id)
+on delete restrict on update restrict;
 
 alter table woreda_stock_distribution_line
    add constraint fk_woreda_s_reference_woreda_c foreign key (distribution_id)
-      references woreda_cmpm_stock_distribution (id);
+references woreda_cmpm_stock_distribution (id);
 

@@ -4,7 +4,9 @@ import org.cats.core.BaseModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,7 +39,7 @@ public class GiftCertificate extends BaseModel {
     private BudgetType budgetType;
 
     @OneToMany(mappedBy = "giftCertificate")
-    private Set<GiftCertificateItem> giftCertificateItems;
+    private List<GiftCertificateItem> giftCertificateItems = new ArrayList<GiftCertificateItem>();
 
     GiftCertificate(){};
 
@@ -129,12 +131,12 @@ public class GiftCertificate extends BaseModel {
         this.estimatedTax = estimatedTax;
     }
 
-    public String getPurchasedYear() {
+    public String getPurchaseYear() {
         return purchaseYear;
     }
 
-    public void setPurchasedYear(String purchasedYear) {
-        this.purchaseYear = purchasedYear;
+    public void setPurchaseYear(String purchaseYear) {
+        this.purchaseYear = purchaseYear;
     }
 
     public Date getExpiryDate() {
@@ -185,8 +187,11 @@ public class GiftCertificate extends BaseModel {
         this.budgetType = budgetType;
     }
 
-    public Set<GiftCertificateItem> getGiftCertificateItems() {
+    public List<GiftCertificateItem> getGiftCertificateItems() {
         return giftCertificateItems;
     }
 
+    public void setGiftCertificateItems(List<GiftCertificateItem> giftCertificateItems) {
+        this.giftCertificateItems = giftCertificateItems;
+    }
 }

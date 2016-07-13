@@ -18,24 +18,19 @@ public class GiftCertificateItem extends BaseModel {
     private Date expirationDate;
 
     @ManyToOne
-    @JoinColumn(name = "gift_certificate_id")
     @JsonIgnore
     private GiftCertificate giftCertificate;
 
     @ManyToOne
-    @JoinColumn(name = "commodity_id")
     private Commodity commodity;
 
     @ManyToOne
-    @JoinColumn(name = "fun_source_id")
     private FundSource fundSource;
 
     @ManyToOne
-    @JoinColumn(name = "uom_id")
     private UnitOfMeasure unitOfMeasure;
 
     @ManyToOne
-    @JoinColumn(name = "currency_id")
     private Currency currency;
 
 
@@ -101,5 +96,13 @@ public class GiftCertificateItem extends BaseModel {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public GiftCertificate getGiftCertificate() {
+        return giftCertificate;
+    }
+
+    public void setGiftCertificate(GiftCertificate giftCertificate) {
+        this.giftCertificate = giftCertificate;
     }
 }
