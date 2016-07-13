@@ -1,24 +1,37 @@
 package org.cats.hierarchy.dto;
 
+import org.cats.hierarchy.domain.Location;
+
 import java.util.List;
 
 public class LocationDTO {
     private Long id;
     private Long locationType;
+    private String locationTypeName;
     private String name;
     private String code;
+    private String parentName;
+    private Long parentId;
     private LocationDTO parent;
     private List<LocationDTO> children;
 
     LocationDTO(){}
 
-    public LocationDTO(Long id, Long locationType, String name,String code,LocationDTO parent, List<LocationDTO> children){
-        this.id = id;
-        this.locationType = locationType;
-        this.name = name;
-        this.code = code;
-        this.parent = parent;
-        this.children = children;
+    public LocationDTO(Location location){
+        this.id = location.getId();
+        this.name = location.getName();
+        this.code = location.getCode();
+
+        if(location.getLocationType() != null){
+            this.locationType = location.getLocationType().getId();
+            this.locationTypeName = location.getLocationType().getName();
+        }
+
+        if(location.getParent() != null){
+            this.parentId = location.getParent().getId();
+            this.parentName = location.getParent().getName();
+            this.parent = new LocationDTO(); // How to limit to one level only.
+        }
     }
 
     public Long getId() {
@@ -37,6 +50,14 @@ public class LocationDTO {
         this.locationType = locationType;
     }
 
+    public String getLocationTypeName() {
+        return locationTypeName;
+    }
+
+    public void setLocationTypeName(String locationTypeName) {
+        this.locationTypeName = locationTypeName;
+    }
+
     public String getName() {
         return name;
     }
@@ -51,6 +72,22 @@ public class LocationDTO {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     public LocationDTO getParent() {

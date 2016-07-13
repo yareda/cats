@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.cats.core.BaseModel;
 import org.hibernate.validator.constraints.Email;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class FDPContact extends BaseModel {
     private String fullName;
     private String mobile;

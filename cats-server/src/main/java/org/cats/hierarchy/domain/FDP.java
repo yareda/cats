@@ -3,12 +3,14 @@ package org.cats.hierarchy.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.cats.core.BaseModel;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Entity
 public class FDP  extends BaseModel{
     private String name;
     private String description;

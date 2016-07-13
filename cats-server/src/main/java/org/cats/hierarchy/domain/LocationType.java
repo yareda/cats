@@ -2,9 +2,12 @@ package org.cats.hierarchy.domain;
 
 import org.cats.core.BaseModel;
 
+import javax.persistence.Entity;
+
 /**
  * Represents administrative hierarchy node types (Region, Zone, Subcity, Woreda, and Kebele)
  */
+@Entity
 public class LocationType extends BaseModel {
 
     private String name;
