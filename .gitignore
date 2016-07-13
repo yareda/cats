@@ -43,3 +43,6 @@ gradle-app.setting
 
 # Other files
 *.db
+
+# IntelliJ output folders
+out/

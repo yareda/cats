@@ -26,7 +26,7 @@ public class LocationService {
 
     public List<LocationDTO> getLocationNodes(Long nodeType){
         List<Location> locationNodes = locationRepository.findByLocationType(nodeType);
-        
+
         List<LocationDTO> nodes = locationNodes.stream().map(LocationDTO::new).collect(Collectors.toList());
 
         return nodes;
