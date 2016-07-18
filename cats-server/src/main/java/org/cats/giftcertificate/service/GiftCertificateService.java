@@ -57,4 +57,12 @@ public class GiftCertificateService {
 
     public List<BudgetType> getBudgetTypes(){return budgetTypeRepository.findAll();}
 
+    public GiftCertificate create(GiftCertificate resource) {
+        // THIS IS A PLACEHOLDER - IMPLEMENT CREATE METHOD!!!!
+        return null;
+    }
+
+    public Long approve(Long id) {
+        return id;
+    }
 }
