@@ -25,13 +25,14 @@ public class GiftCertificateService {
     private GiftCertificateRepository giftCertificateRepository;
 
     @Autowired
-    private DonorRepository donorRepository;
-
-    @Autowired
     private FundSourceRepository fundSourceRepository;
 
     @Autowired
     private BudgetTypeRepository budgetTypeRepository;
+
+    /**
+     * GiftCertificate service methods
+     * */
 
     public List<GiftCertificate> getGiftCertificatesByStatus(String status){
         return giftCertificateRepository.findByStatus(status);
@@ -49,13 +50,6 @@ public class GiftCertificateService {
         return giftCertificateRepository.save(giftCertificate);
     }
 
-    public List<Donor> getDonors(){
-        return donorRepository.findAll();
-    }
-
-    public List<FundSource> getFundSources(){return fundSourceRepository.findAll();}
-
-    public List<BudgetType> getBudgetTypes(){return budgetTypeRepository.findAll();}
 
     public GiftCertificate create(GiftCertificate resource) {
         // THIS IS A PLACEHOLDER - IMPLEMENT CREATE METHOD!!!!
@@ -65,4 +59,18 @@ public class GiftCertificateService {
     public Long approve(Long id) {
         return id;
     }
+
+
+    /**
+     * FundSource service methods
+     */
+    public List<FundSource> getFundSources(){return fundSourceRepository.findAll();}
+
+
+    /**
+     * BudgetType service methods
+     */
+
+    public List<BudgetType> getBudgetTypes(){return budgetTypeRepository.findAll();}
+
 }

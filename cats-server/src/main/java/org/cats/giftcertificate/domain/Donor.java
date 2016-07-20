@@ -8,12 +8,16 @@ import javax.persistence.Id;
 
 @Entity
 public class Donor extends BaseModel {
+    public static final Integer DONOR_ACTIVE = 1;
+    public static final Integer DONOR_INACTIVE = 0;
+
     @Column(unique = true)
     private String name;
     private String shortName;
     private String code;
     private Boolean sourceDonor;
     private Boolean responsibleDonor;
+    private Integer status;
 
     Donor(){}
 
@@ -63,5 +67,13 @@ public class Donor extends BaseModel {
 
     public void setResponsibleDonor(Boolean responsibleDonor) {
         this.responsibleDonor = responsibleDonor;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
