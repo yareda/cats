@@ -25,6 +25,7 @@ public class DonorService {
         return donorRepository.findOne(donorID);
     }
 
+    @Transactional
     public void save(Donor donor){
         donorRepository.save(donor);
     }

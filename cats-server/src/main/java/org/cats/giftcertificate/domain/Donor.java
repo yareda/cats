@@ -2,16 +2,15 @@ package org.cats.giftcertificate.domain;
 
 import org.cats.core.BaseModel;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Donor extends BaseModel {
     public static final Integer DONOR_ACTIVE = 1;
     public static final Integer DONOR_INACTIVE = 0;
 
-    @Column(unique = true)
+    @NotNull
     private String name;
     private String shortName;
     private String code;
@@ -53,16 +52,16 @@ public class Donor extends BaseModel {
         this.code = code;
     }
 
-    public Boolean isSourceDonor() {
+    public Boolean getSourceDonor() {
         return sourceDonor;
+    }
+
+    public Boolean getResponsibleDonor() {
+        return responsibleDonor;
     }
 
     public void setSourceDonor(Boolean sourceDonor) {
         this.sourceDonor = sourceDonor;
-    }
-
-    public Boolean isResponsibleDonor() {
-        return responsibleDonor;
     }
 
     public void setResponsibleDonor(Boolean responsibleDonor) {
