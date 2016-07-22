@@ -27,6 +27,7 @@ targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 
@@ -36,9 +37,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.postgresql:postgresql:9.4.1207')
 	compile('org.springframework.boot:spring-boot-devtools')
-	compile('com.mangofactory:swagger-springmvc:1.0.2')
-	compile('com.wordnik:swagger-annotations')
-	compile('com.mangofactory:swagger-models')
+	compile('io.springfox:springfox-swagger2:2.5.0')
+	compile('io.springfox:springfox-swagger-ui:2.5.0')
 
 	//compile('org.flywaydb:flyway-core:4.0.3')
 
