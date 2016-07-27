@@ -73,6 +73,8 @@ public class DonorController {
     public ResponseEntity<Donor> deleteDonor(@PathVariable("id") Long id){
         Donor d = donorService.getDonor(id);
 
+        Boolean falg = true;
+
         if(d == null){
             return new ResponseEntity<Donor>(HttpStatus.NOT_FOUND);
         }
