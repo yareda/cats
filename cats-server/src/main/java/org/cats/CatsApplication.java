@@ -38,7 +38,7 @@ public class CatsApplication {
 
 
     @Bean
-    public Docket petApi() {
+    public Docket catsApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
